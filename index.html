@@ -5,16 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Programar Cirugía</title>
   <style>
+    :root {
+      --main-color: #009999;
+      --accent-color: #006666;
+      --bg-color: #e0f7f7;
+      --text-color: #033;
+      --form-bg: #ffffff;
+      --input-bg: #f1fdfc;
+      --input-border: #b2dfdb;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #e0f7f7;
+      background-color: var(--bg-color);
       margin: 0;
       padding: 0;
-      color: #004d40;
+      color: var(--text-color);
     }
 
     header {
-      background-color: #00695c;
+      background-color: var(--main-color);
       color: white;
       padding: 1.5rem;
       text-align: center;
@@ -28,11 +38,11 @@
       gap: 2rem;
       max-width: 1000px;
       margin: 2rem auto;
-      background-color: #ffffff;
+      background-color: var(--form-bg);
       padding: 2rem;
       border-radius: 1rem;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border: 3px solid #00bfa5;
+      border: 3px solid var(--main-color);
     }
 
     form {
@@ -44,21 +54,21 @@
     label {
       margin-top: 1rem;
       font-weight: bold;
-      color: #00695c;
+      color: var(--accent-color);
     }
 
     input, textarea {
       padding: 0.7rem;
       font-size: 1rem;
-      border: 1px solid #b2dfdb;
+      border: 1px solid var(--input-border);
       border-radius: 5px;
-      background-color: #f1fdfc;
+      background-color: var(--input-bg);
     }
 
     button {
       margin-top: 2rem;
       padding: 0.8rem;
-      background-color: #00bfa5;
+      background-color: var(--main-color);
       color: white;
       font-weight: bold;
       border: none;
@@ -68,7 +78,7 @@
     }
 
     button:hover {
-      background-color: #009688;
+      background-color: var(--accent-color);
     }
 
     #result {
@@ -119,3 +129,4 @@
   <script src="app.js"></script>
 </body>
 </html>
+
