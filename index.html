@@ -2,88 +2,130 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Programar Cirugía</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendar Cita Médica</title>
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #e0f7f7;
-      color: #004d4d;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-      background-color: #b2f2f2;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 100, 100, 0.2);
     }
 
-    h2 {
+    h1 {
+      color: #800020;
       text-align: center;
-      margin-bottom: 20px;
-      color: #007777;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(128, 0, 32, 0.2);
+      border: 2px solid #800020;
     }
 
     label {
       display: block;
       margin-top: 15px;
       font-weight: bold;
+      color: #800020;
     }
 
-    input, select {
+    input, textarea {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      border: 1px solid #80dcdc;
-      border-radius: 8px;
-      background-color: #f0ffff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
     }
 
     button {
+      background-color: #800020;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
       margin-top: 20px;
       width: 100%;
-      padding: 12px;
-      background-color: #00cccc;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
     }
 
     button:hover {
-      background-color: #009999;
+      background-color: #a0002d;
+    }
+
+    #result {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Programar Procedimiento Quirúrgico</h2>
-    <form id="appointmentForm">
-      <label for="paciente">ID del Paciente:</label>
-      <input type="text" id="paciente" required>
+  <h1>Formulario para Agendar Cita Médica</h1>
+  <form id="appointmentForm">
+    <label for="patientName">Nombre del Paciente:</label>
+    <input type="text" id="patientName" name="patientName" required>
 
-      <label for="procedimiento">Procedimiento Solicitado:</label>
-      <select id="procedimiento" required>
-        <option value="">Cargando procedimientos...</option>
-      </select>
+    <label for="appointmentDate">Fecha de la Cita:</label>
+    <input type="date" id="appointmentDate" name="appointmentDate" required>
 
-      <label for="fecha">Fecha de la Cirugía:</label>
-      <input type="date" id="fecha" required>
+    <label for="appointmentTime">Hora de la Cita:</label>
+    <input type="time" id="appointmentTime" name="appointmentTime" required>
 
-      <label for="hora">Hora de la Cirugía:</label>
-      <input type="time" id="hora" required>
+    <label for="reason">Motivo de la Cita:</label>
+    <textarea id="reason" name="reason" rows="4" required></textarea>
 
-      <label for="location">ID del Quirófano (Location):</label>
-      <input type="text" id="location" required>
+    <button type="submit">Agendar Cita</button>
+  </form>
 
-      <button type="submit">Programar Cirugía</button>
-    </form>
-  </div>
+  <div id="result"></div>
 
-  <script src="appointment.js"></script>
+  <script>
+    document.getElementById('appointmentForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const patientName = document.getElementById('patientName').value;
+      const appointmentDate = document.getElementById('appointmentDate').value;
+      const appointmentTime = document.getElementById('appointmentTime').value;
+      const reason = document.getElementById('reason').value;
+
+      const appointmentData = {
+        patientName,
+        appointmentDate,
+        appointmentTime,
+        reason
+      };
+
+      console.log("Datos a enviar:", appointmentData);
+
+      fetch('https://hl7-fhir-ehr-solangie-9665.onrender.com/appointment/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(appointmentData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error en la solicitud: ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Cita agendada exitosamente:', data);
+        document.getElementById('result').textContent = '¡Cita agendada exitosamente! ID: ' + data._id;
+        document.getElementById('result').style.color = 'green';
+        document.getElementById('appointmentForm').reset();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('result').textContent = 'Error al agendar la cita: ' + error.message;
+        document.getElementById('result').style.color = 'red';
+      });
+    });
+  </script>
 </body>
 </html>

@@ -1,98 +1,43 @@
-const procedimientoSelect = document.getElementById('procedimiento');
-
-// Cargar procedimientos disponibles desde ServiceRequest (FHIR)
-fetch('https://hl7-fhir-ehr-leonardo.onrender.com/fhir/ServiceRequest')
-  .then(res => res.json())
-  .then(data => {
-    const procedimientos = new Set();
-
-    if (data.entry) {
-      data.entry.forEach(item => {
-        const sr = item.resource;
-        if (sr.status === 'active' && sr.code && sr.code.text) {
-          procedimientos.add(sr.code.text);
-        }
-      });
-    }
-
-    // Limpiar y llenar el select con los procedimientos únicos
-    procedimientoSelect.innerHTML = '<option value="">--Seleccione--</option>';
-    procedimientos.forEach(proc => {
-      const option = document.createElement('option');
-      option.value = proc;
-      option.textContent = proc;
-      procedimientoSelect.appendChild(option);
-    });
-
-    if (procedimientos.size === 0) {
-      const option = document.createElement('option');
-      option.textContent = 'No hay procedimientos activos disponibles';
-      option.disabled = true;
-      procedimientoSelect.appendChild(option);
-    }
-  })
-  .catch(error => {
-    console.error('Error cargando procedimientos:', error);
-    procedimientoSelect.innerHTML = '<option>Error al cargar procedimientos</option>';
-  });
-
-
-// Enviar cita programada (Appointment)
 document.getElementById('appointmentForm').addEventListener('submit', function(event) {
   event.preventDefault();
 
-  const pacienteId = document.getElementById('paciente').value;
-  const procedimiento = document.getElementById('procedimiento').value;
-  const fecha = document.getElementById('fecha').value;
-  const hora = document.getElementById('hora').value;
-  const locationId = document.getElementById('location').value;
+  // Obtener los valores del formulario
+  const patientName = document.getElementById('patientName').value;
+  const appointmentDate = document.getElementById('appointmentDate').value;
+  const appointmentTime = document.getElementById('appointmentTime').value;
+  const reason = document.getElementById('reason').value;
 
-  const startDateTime = `${fecha}T${hora}:00Z`;
-
-  const appointment = {
-    resourceType: "Appointment",
-    status: "booked",
-    description: procedimiento,
-    start: startDateTime,
-    participant: [
-      {
-        actor: {
-          reference: `Patient/${pacienteId}`
-        },
-        status: "accepted"
-      },
-      {
-        actor: {
-          reference: `Location/${locationId}`
-        },
-        status: "accepted"
-      }
-    ]
+  // Construir el objeto con los datos de la cita
+  const appointmentData = {
+    patientName,
+    appointmentDate,
+    appointmentTime,
+    reason
   };
 
-  console.log('Enviando FHIR Appointment:', appointment);
+  console.log("Datos a enviar:", appointmentData);
 
-  fetch('https://hl7-fhir-ehr-leonardo.onrender.com/fhir/Appointment', {
+  // Enviar la solicitud al backend
+  fetch('https://hl7-fhir-ehr-solangie-9665.onrender.com/appointment/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(appointment)
+    body: JSON.stringify(appointmentData)
   })
-  .then(async response => {
+  .then(response => {
     if (!response.ok) {
-      throw new Error('Error en la programación: ' + response.statusText);
+      throw new Error('Error en la solicitud: ' + response.statusText);
     }
-
-    const ct = response.headers.get('content-type') || '';
-    if (ct.includes('application/json')) {
-      const data = await response.json();
-      console.log('Appointment creado:', data);
-      alert('Cirugía programada exitosamente! ID: ' + data.id);
-    } else {
-      alert('Cita programada, pero sin respuesta en JSON.');
-    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Cita agendada exitosamente:', data);
+    document.getElementById('result').textContent = '¡Cita agendada exitosamente! ID: ' + data._id;
+    document.getElementById('result').style.color = 'green';
+    document.getElementById('appointmentForm').reset();
   })
   .catch(error => {
     console.error('Error:', error);
-    alert('Hubo un error al programar la cirugía: ' + error.message);
+    document.getElementById('result').textContent = 'Error al agendar la cita: ' + error.message;
+    document.getElementById('result').style.color = 'red';
   });
 });
