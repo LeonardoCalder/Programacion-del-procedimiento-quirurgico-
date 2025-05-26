@@ -2,124 +2,112 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Programación de Procedimiento Quirúrgico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Programar Cirugía</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #e0f7f5;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e0f7f7;
       margin: 0;
-      padding: 25px;
+      padding: 2rem;
       color: #004d40;
     }
 
     h1 {
       text-align: center;
-      color: #00796b;
-      margin-bottom: 30px;
-    }
-
-    form {
-      max-width: 600px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 14px;
-      box-shadow: 0 5px 15px rgba(0, 105, 92, 0.2);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 25px 30px;
-    }
-
-    label {
-      font-weight: 700;
-      margin-bottom: 6px;
-      display: block;
       color: #00695c;
     }
 
-    input[type="text"],
-    input[type="date"],
-    input[type="time"],
-    textarea {
-      grid-column: span 2;
-      padding: 10px;
-      border: 1.5px solid #004d40;
-      border-radius: 8px;
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 1000px;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border: 3px solid #00bfa5;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #00695c;
+    }
+
+    input, textarea {
+      padding: 0.7rem;
       font-size: 1rem;
-      color: #004d40;
-      background-color: #e0f2f1;
-      transition: border-color 0.3s ease;
-      resize: vertical;
-    }
-
-    input[type="text"]:focus,
-    input[type="date"]:focus,
-    input[type="time"]:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #00796b;
-      background-color: #b2dfdb;
-    }
-
-    /* Labels on left column, inputs on right */
-    label[for="patientName"],
-    label[for="appointmentDate"],
-    label[for="appointmentTime"],
-    label[for="reason"] {
-      grid-column: span 2;
+      border: 1px solid #b2dfdb;
+      border-radius: 5px;
+      background-color: #f1fdfc;
     }
 
     button {
-      grid-column: span 2;
-      background-color: #00796b;
-      color: #fff;
-      font-size: 1.1rem;
-      padding: 14px;
+      margin-top: 2rem;
+      padding: 0.8rem;
+      background-color: #00bfa5;
+      color: white;
+      font-weight: bold;
       border: none;
-      border-radius: 10px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin-top: 10px;
+      transition: background 0.3s ease;
     }
 
     button:hover {
-      background-color: #004d40;
+      background-color: #009688;
     }
 
     #result {
-      max-width: 600px;
-      margin: 30px auto 0 auto;
-      font-weight: 700;
-      font-size: 1.1rem;
+      grid-column: span 2;
       text-align: center;
-      min-height: 40px;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <h1>Programación de Cirugía</h1>
+  <div class="container">
+    <form id="appointmentForm">
+      <label for="patientName">Nombre del Paciente:</label>
+      <input type="text" id="patientName" name="patientName" required />
 
-  <h1>Programación de Procedimiento Quirúrgico</h1>
+      <label for="appointmentDate">Fecha de la Cirugía:</label>
+      <input type="date" id="appointmentDate" name="appointmentDate" required />
 
-  <form id="appointmentForm">
-    <label for="patientName">Nombre del Paciente:</label>
-    <input type="text" id="patientName" name="patientName" required placeholder="Ej. Juan Pérez" />
+      <label for="appointmentTime">Hora de la Cirugía:</label>
+      <input type="time" id="appointmentTime" name="appointmentTime" required />
 
-    <label for="appointmentDate">Fecha de la Cirugía:</label>
-    <input type="date" id="appointmentDate" name="appointmentDate" required />
+      <label for="reason">Motivo de la Cirugía:</label>
+      <textarea id="reason" name="reason" rows="4" required></textarea>
 
-    <label for="appointmentTime">Hora de la Cirugía:</label>
-    <input type="time" id="appointmentTime" name="appointmentTime" required />
+      <button type="submit">Programar Cirugía</button>
+    </form>
 
-    <label for="reason">Motivo / Descripción:</label>
-    <textarea id="reason" name="reason" rows="4" required placeholder="Ej. Cirugía programada de apendicectomía"></textarea>
+    <div>
+      <p>Utiliza este formulario para registrar una cita quirúrgica.</p>
+      <p>El recurso FHIR generado será del tipo <strong>Appointment</strong>, con estado <code>booked</code>.</p>
+      <p>El paciente será incluido como participante, y se especificará fecha y hora exactas de la cirugía.</p>
+    </div>
 
-    <button type="submit">Programar Cirugía</button>
-  </form>
-
-  <div id="result"></div>
+    <div id="result"></div>
+  </div>
 
   <script src="app.js"></script>
-
 </body>
 </html>
