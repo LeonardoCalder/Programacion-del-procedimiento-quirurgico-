@@ -2,163 +2,96 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Programación de Procedimiento Quirúrgico - HL7 FHIR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agendar Procedimiento Quirúrgico</title>
   <style>
-    :root {
-      --main-color: #009999;
-      --accent-color: #006666;
-      --bg-color: #e0f7f7;
-      --text-color: #033;
-    }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      margin: 0;
-      padding: 0;
-      color: var(--text-color);
-    }
-
-    header {
-      background-color: var(--main-color);
-      color: white;
-      padding: 20px;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
     }
 
     h1 {
-      margin: 0;
-    }
-
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px;
-      gap: 20px;
+      color: #800020;
+      text-align: center;
+      margin-bottom: 25px;
     }
 
     form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      width: 100%;
-    }
-
-    .form-section {
-      flex: 1 1 45%;
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
-
-    .form-section h2 {
-      color: var(--accent-color);
-      border-bottom: 2px solid var(--accent-color);
-      padding-bottom: 8px;
-      margin-top: 0;
+      max-width: 500px;
+      margin: auto;
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(128, 0, 32, 0.2);
+      border: 2px solid #800020;
     }
 
     label {
       display: block;
-      margin: 12px 0 5px;
+      margin-top: 15px;
       font-weight: bold;
+      color: #800020;
     }
 
-    input, select, textarea {
+    input, textarea, select {
       width: 100%;
       padding: 10px;
-      border-radius: 6px;
+      margin-top: 5px;
       border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
       box-sizing: border-box;
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 70px;
-    }
-
     button {
-      margin: 20px auto 0;
-      display: block;
-      background-color: var(--main-color);
-      color: white;
-      padding: 12px 24px;
+      background-color: #800020;
+      color: #fff;
+      padding: 12px 20px;
       border: none;
-      border-radius: 8px;
-      font-size: 16px;
+      border-radius: 5px;
+      font-size: 1em;
       cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
       transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: var(--accent-color);
+      background-color: #a0002d;
     }
 
     #result {
-      max-width: 800px;
-      margin: 30px auto;
-      padding: 20px;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-
-    .success {
-      background-color: #e0f7ec;
-      border-left: 6px solid #009966;
-    }
-
-    .error {
-      background-color: #fdecea;
-      border-left: 6px solid #cc0000;
-    }
-
-    @media (max-width: 768px) {
-      .form-section {
-        flex: 1 1 100%;
-      }
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1em;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Programación de Procedimiento Quirúrgico</h1>
-    <p>Generación de recurso FHIR: <strong>Appointment</strong></p>
-  </header>
+  <h1>Programar Procedimiento Quirúrgico</h1>
+  <form id="appointmentForm">
+    <label for="patientId">ID del Paciente:</label>
+    <input type="text" id="patientId" name="patientId" placeholder="Ej: 12345" required />
 
-  <div class="container">
-    <form id="appointmentForm">
+    <label for="patientName">Nombre del Paciente:</label>
+    <input type="text" id="patientName" name="patientName" placeholder="Ej: Juan Pérez" required />
 
-      <div class="form-section">
-        <h2>Datos del Paciente</h2>
-        <label for="patientName">Nombre del Paciente:</label>
-        <input type="text" id="patientName" name="patientName" required>
+    <label for="locationId">ID del Quirófano:</label>
+    <input type="text" id="locationId" name="locationId" placeholder="Ej: QF-12" required />
 
-        <label for="patientReference">ID o Referencia del Paciente:</label>
-        <input type="text" id="patientReference" name="patientReference" required>
-      </div>
+    <label for="appointmentDate">Fecha de la Cirugía:</label>
+    <input type="date" id="appointmentDate" name="appointmentDate" required />
 
-      <div class="form-section">
-        <h2>Datos de la Cita</h2>
-        <label for="appointmentDate">Fecha de la Cirugía:</label>
-        <input type="date" id="appointmentDate" name="appointmentDate" required>
+    <label for="appointmentTime">Hora de la Cirugía:</label>
+    <input type="time" id="appointmentTime" name="appointmentTime" required />
 
-        <label for="appointmentTime">Hora de la Cirugía:</label>
-        <input type="time" id="appointmentTime" name="appointmentTime" required>
+    <label for="reason">Motivo o Descripción:</label>
+    <textarea id="reason" name="reason" rows="4" placeholder="Ej: Apendicectomía programada" required></textarea>
 
-        <label for="locationReference">Quirófano (ID o Referencia):</label>
-        <input type="text" id="locationReference" name="locationReference" required>
-
-        <label for="reason">Motivo de la Cita:</label>
-        <textarea id="reason" name="reason" rows="4" required></textarea>
-      </div>
-
-      <button type="submit">Agendar Cirugía</button>
-    </form>
-  </div>
+    <button type="submit">Programar Cirugía</button>
+  </form>
 
   <div id="result"></div>
 
