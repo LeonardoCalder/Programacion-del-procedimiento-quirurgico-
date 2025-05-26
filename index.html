@@ -34,6 +34,7 @@
     form {
       display: flex;
       flex-direction: column;
+      grid-column: span 2;
     }
 
     label {
@@ -77,6 +78,14 @@
       .container {
         grid-template-columns: 1fr;
       }
+
+      form {
+        grid-column: span 1;
+      }
+
+      #result {
+        grid-column: span 1;
+      }
     }
   </style>
 </head>
@@ -98,12 +107,6 @@
 
       <button type="submit">Programar Cirugía</button>
     </form>
-
-    <div>
-      <p>Utiliza este formulario para registrar una cita quirúrgica.</p>
-      <p>El recurso FHIR generado será del tipo <strong>Appointment</strong>, con estado <code>booked</code>.</p>
-      <p>El paciente será incluido como participante, y se especificará fecha y hora exactas de la cirugía.</p>
-    </div>
 
     <div id="result"></div>
   </div>
