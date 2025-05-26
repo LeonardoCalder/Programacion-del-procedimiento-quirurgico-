@@ -47,7 +47,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
   })
   .then(data => {
     console.log('Cita agendada exitosamente:', data);
-    document.getElementById('result').textContent = '✅ Cirugía programada exitosamente. ID: ' + (data.id || data._id || '');
+    document.getElementById('result').textContent = '✅ Cirugía programada exitosamente. ' + (data.id || data._id || '');
     document.getElementById('result').style.color = '#004d40';
     document.getElementById('appointmentForm').reset();
   })
