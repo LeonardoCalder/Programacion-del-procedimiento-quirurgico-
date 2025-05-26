@@ -18,7 +18,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
   console.log("Datos a enviar:", appointmentData);
 
   // Enviar la solicitud al backend
-  fetch('https://hl7-fhir-ehr-leonardo.onrender.com/appointment/', {
+  fetch('https://hl7-fhir-ehr-leonardo.onrender.com/Appointment/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(appointmentData)
