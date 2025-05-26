@@ -9,13 +9,17 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #e0f7f7;
       margin: 0;
-      padding: 2rem;
+      padding: 0;
       color: #004d40;
     }
 
-    h1 {
+    header {
+      background-color: #00695c;
+      color: white;
+      padding: 1.5rem;
       text-align: center;
-      color: #00695c;
+      font-size: 1.8rem;
+      font-weight: bold;
     }
 
     .container {
@@ -23,7 +27,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
       max-width: 1000px;
-      margin: auto;
+      margin: 2rem auto;
       background-color: #ffffff;
       padding: 2rem;
       border-radius: 1rem;
@@ -90,7 +94,8 @@
   </style>
 </head>
 <body>
-  <h1>Programación de Cirugía</h1>
+  <header>Programación del procedimiento quirúrgico</header>
+
   <div class="container">
     <form id="appointmentForm">
       <label for="patientName">Nombre del Paciente:</label>
