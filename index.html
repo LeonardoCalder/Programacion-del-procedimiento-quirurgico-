@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Programar Procedimiento Quirúrgico</title>
+  <title>Programación de Procedimiento Quirúrgico</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #e0f7f1;
+      background-color: #e0f7f5;
       margin: 0;
-      padding: 20px;
+      padding: 25px;
       color: #004d40;
     }
 
@@ -24,56 +24,63 @@
       margin: 0 auto;
       background-color: #ffffff;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 6px 15px rgba(0, 121, 107, 0.3);
-      border: 2px solid #00796b;
+      border-radius: 14px;
+      box-shadow: 0 5px 15px rgba(0, 105, 92, 0.2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px 30px;
     }
 
     label {
-      display: block;
-      margin-top: 15px;
       font-weight: 700;
-      color: #004d40;
+      margin-bottom: 6px;
+      display: block;
+      color: #00695c;
     }
 
     input[type="text"],
     input[type="date"],
     input[type="time"],
     textarea {
-      width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border: 1.5px solid #4db6ac;
+      grid-column: span 2;
+      padding: 10px;
+      border: 1.5px solid #004d40;
       border-radius: 8px;
-      font-size: 1em;
-      box-sizing: border-box;
-      transition: border-color 0.3s;
+      font-size: 1rem;
+      color: #004d40;
+      background-color: #e0f2f1;
+      transition: border-color 0.3s ease;
+      resize: vertical;
     }
 
     input[type="text"]:focus,
     input[type="date"]:focus,
     input[type="time"]:focus,
     textarea:focus {
-      border-color: #00796b;
       outline: none;
+      border-color: #00796b;
+      background-color: #b2dfdb;
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 90px;
+    /* Labels on left column, inputs on right */
+    label[for="patientName"],
+    label[for="appointmentDate"],
+    label[for="appointmentTime"],
+    label[for="reason"] {
+      grid-column: span 2;
     }
 
     button {
+      grid-column: span 2;
       background-color: #00796b;
-      color: white;
-      padding: 14px 0;
+      color: #fff;
+      font-size: 1.1rem;
+      padding: 14px;
       border: none;
-      border-radius: 12px;
-      font-size: 1.1em;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 25px;
-      width: 100%;
       transition: background-color 0.3s ease;
+      margin-top: 10px;
     }
 
     button:hover {
@@ -84,20 +91,19 @@
       max-width: 600px;
       margin: 30px auto 0 auto;
       font-weight: 700;
-      font-size: 1.1em;
+      font-size: 1.1rem;
       text-align: center;
-      color: #00796b;
+      min-height: 40px;
     }
   </style>
 </head>
 <body>
-  <h1>Programar Procedimiento Quirúrgico</h1>
-  <form id="appointmentForm">
-    <label for="patientId">ID del Paciente:</label>
-    <input type="text" id="patientId" name="patientId" placeholder="Ej: 12345" required />
 
+  <h1>Programación de Procedimiento Quirúrgico</h1>
+
+  <form id="appointmentForm">
     <label for="patientName">Nombre del Paciente:</label>
-    <input type="text" id="patientName" name="patientName" placeholder="Ej: Juan Pérez" required />
+    <input type="text" id="patientName" name="patientName" required placeholder="Ej. Juan Pérez" />
 
     <label for="appointmentDate">Fecha de la Cirugía:</label>
     <input type="date" id="appointmentDate" name="appointmentDate" required />
@@ -105,8 +111,8 @@
     <label for="appointmentTime">Hora de la Cirugía:</label>
     <input type="time" id="appointmentTime" name="appointmentTime" required />
 
-    <label for="reason">Motivo o Descripción:</label>
-    <textarea id="reason" name="reason" placeholder="Ej: Apendicectomía programada" required></textarea>
+    <label for="reason">Motivo / Descripción:</label>
+    <textarea id="reason" name="reason" rows="4" required placeholder="Ej. Cirugía programada de apendicectomía"></textarea>
 
     <button type="submit">Programar Cirugía</button>
   </form>
@@ -114,5 +120,6 @@
   <div id="result"></div>
 
   <script src="app.js"></script>
+
 </body>
 </html>
