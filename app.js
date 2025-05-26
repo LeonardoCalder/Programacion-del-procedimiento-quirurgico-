@@ -13,25 +13,31 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
 
   const startDateTime = new Date(appointmentDate + 'T' + appointmentTime).toISOString();
 
-  const appointmentData = {
-    resourceType: "Appointment",
-    status: "booked",
-    start: startDateTime,
-    participant: [
-      {
-        actor: { display: patientName },
-        status: "accepted"
-      }
-    ],
-    description: reason
+  const payload = {
+    patientName: patientName,
+    appointmentDate: appointmentDate,
+    appointmentTime: appointmentTime,
+    reason: reason,
+    appointment: {
+      resourceType: "Appointment",
+      status: "booked",
+      start: startDateTime,
+      participant: [
+        {
+          actor: { display: patientName },
+          status: "accepted"
+        }
+      ],
+      description: reason
+    }
   };
 
-  console.log("Datos a enviar:", appointmentData);
+  console.log("Datos a enviar:", payload);
 
   fetch('https://hl7-fhir-ehr-leonardo.onrender.com/appointment/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/fhir+json' },
-    body: JSON.stringify(appointmentData)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
   })
   .then(response => {
     if (!response.ok) {
@@ -41,13 +47,13 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
   })
   .then(data => {
     console.log('Cita agendada exitosamente:', data);
-    document.getElementById('result').textContent = '¡Cirugía programada exitosamente! ID: ' + (data.id || data._id || '');
+    document.getElementById('result').textContent = '✅ Cirugía programada exitosamente. ID: ' + (data.id || data._id || '');
     document.getElementById('result').style.color = '#004d40';
     document.getElementById('appointmentForm').reset();
   })
   .catch(error => {
     console.error('Error:', error);
-    document.getElementById('result').textContent = 'Error al programar la cirugía: ' + error.message;
+    document.getElementById('result').textContent = '❌ Error al programar la cirugía: ' + error.message;
     document.getElementById('result').style.color = '#b00020';
   });
 });
